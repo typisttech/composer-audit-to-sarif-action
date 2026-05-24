@@ -58,7 +58,7 @@
 See [action.yml](action.yml) and the underlying script [`ComSARIF`](https://github.com/typisttech/comsarif/#options).
 
 ```yaml
-  - uses: typisttech/composer-audit-to-sarif-action@0
+  - uses: typisttech/composer-audit-to-sarif-action@v0
     with:
       # Path to Path to audit JSON file
       #
@@ -187,7 +187,7 @@ jobs:
 -       - run: composer audit --locked --format json > audit.json
           continue-on-error: true
 
-        - uses: typisttech/composer-audit-to-sarif-action@main
+        - uses: typisttech/composer-audit-to-sarif-action@v0
           id: comsarif
           with:
             audit: audit.json
