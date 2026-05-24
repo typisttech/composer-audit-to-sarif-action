@@ -70,3 +70,13 @@ jobs:
           audit: foo/bar/audit-baz.json
           lock: foo/bar/composer-baz.lock
           root: foo
+
+  wait-for-all-test:
+    if: cancelled() || contains(needs.*.result, 'cancelled') || contains(needs.*.result, 'failure')
+    needs:
+      - default
+      - customization
+    runs-on: ubuntu-latest
+    steps:
+      - name: Assert no required jobs were cancelled or failed
+        run: exit 1
