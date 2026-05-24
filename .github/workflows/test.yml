@@ -1,0 +1,72 @@
+name: Test
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+    tags:
+      - '**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref_name }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  default:
+    runs-on: ${{ matrix.runs-on }}
+    strategy:
+      matrix:
+        runs-on:
+          - ubuntu-latest
+          - ubuntu-24.04-arm
+          - macos-latest
+          - macos-26-intel
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+          path: local-action
+
+      - name: Create fake audit.json
+        run: echo '{"advisories":[],"abandoned":[]}' > audit.json
+
+      - name: Create fake composer.lock
+        run: echo '{"packages":[{"name":"psr/log"}],"packages-dev":[]}' > composer.lock
+
+      - uses: ./local-action
+
+  customization:
+    runs-on: ${{ matrix.runs-on }}
+    strategy:
+      matrix:
+        runs-on:
+          - ubuntu-latest
+          - ubuntu-24.04-arm
+          - macos-latest
+          - macos-26-intel
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+          path: local-action
+
+      - name: Create fake root directory
+        run: mkdir -p foo/bar
+
+      - name: Create fake audit.json
+        run: echo '{"advisories":[],"abandoned":[]}' > foo/bar/audit-baz.json
+
+      - name: Create fake composer.lock
+        run: echo '{"packages":[{"name":"psr/log"}],"packages-dev":[]}' > foo/bar/composer-baz.lock
+
+      - uses: ./local-action
+        with:
+          audit: foo/bar/audit-baz.json
+          lock: foo/bar/composer-baz.lock
+          root: foo

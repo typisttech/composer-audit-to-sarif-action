@@ -1,0 +1,33 @@
+name: Publish Major Tag
+
+on:
+  release:
+    types:
+      - published
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: |
+          Tag name that the major tag will point to. Examples: v1.2.3, 1.2.3
+        required: true
+        type: string
+
+permissions: {}
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create GitHub App Token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        id: app-token
+        with:
+          client-id: ${{ vars.TASTENDRUCK_CLIENT_ID }}
+          private-key: ${{ secrets.TASTENDRUCK_PRIVATE_KEY }}
+          permission-contents: write
+          permission-workflows: write
+
+      - uses: actions/publish-action@23f4c6f12633a2da8f44938b71fde9afec138fb4 # v0.4.0
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          source-tag: ${{ inputs.tag_name || github.event.release.tag_name }}
