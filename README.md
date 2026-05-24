@@ -33,6 +33,26 @@
 
 ---
 
+## Gallery
+
+<details open>
+  <summary>Code scanning alerts</summary>
+
+  ![GitHub code scanning alerts](assets/alerts.webp)
+</details>
+
+<details>
+  <summary>Inline advisory pull request comment</summary>
+
+  ![Inline advisory comment on GitHub pull request](assets/advisory.webp)
+</details>
+
+<details>
+  <summary>Inline abandonment pull request comment</summary>
+
+  ![Inline abandonment comment on GitHub pull request](assets/abandoned.webp)
+</details>
+
 ## Usage
 
 See [action.yml](action.yml) and the underlying script [`ComSARIF`](https://github.com/typisttech/comsarif/#options).
@@ -176,6 +196,15 @@ jobs:
           with:
             sarif_file: ${{ steps.comsarif.outputs.sarif }}
 ```
+
+## People Also Use
+
+- [PHP Matrix Action](https://github.com/typisttech/php-matrix-action)
+  Generate PHP version matrix according to `composer.json` for GitHub Actions
+- [WP Sec Adv](https://github.com/typisttech/wpsecadv)
+  Composer repository for WordPress security advisories
+- [WP Org Closed Plugin](https://github.com/typisttech/wp-org-closed-plugin)
+  Composer plugin to mark packages as abandoned if closed on WordPress.org
 
 ## Credits
 
