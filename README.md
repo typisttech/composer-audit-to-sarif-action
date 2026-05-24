@@ -197,6 +197,15 @@ jobs:
             sarif_file: ${{ steps.comsarif.outputs.sarif }}
 ```
 
+## People Also Use
+
+- [PHP Matrix Action](https://github.com/typisttech/php-matrix-action)
+  Generate PHP version matrix according to `composer.json` for GitHub Actions
+- [WP Sec Adv](https://github.com/typisttech/wpsecadv)
+  Composer repository for WordPress security advisories
+- [WP Org Closed Plugin](https://github.com/typisttech/wp-org-closed-plugin)
+  Composer plugin to mark packages as abandoned if closed on WordPress.org
+
 ## Credits
 
 [`Composer Audit to SARIF Action`](https://github.com/typisttech/composer-audit-to-sarif-action) is a [Typist Tech](https://typist.tech) project and
