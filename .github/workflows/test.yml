@@ -40,6 +40,11 @@ jobs:
         run: echo '{"packages":[{"name":"psr/log"}],"packages-dev":[]}' > composer.lock
 
       - uses: ./local-action
+        id: subject
+
+      - name: Assert output contains SARIF
+        if: steps.subject.outputs.sarif == ''
+        run: exit 1
 
   customization:
     runs-on: ${{ matrix.runs-on }}
@@ -66,10 +71,15 @@ jobs:
         run: echo '{"packages":[{"name":"psr/log"}],"packages-dev":[]}' > foo/bar/composer-baz.lock
 
       - uses: ./local-action
+        id: subject
         with:
           audit: foo/bar/audit-baz.json
           lock: foo/bar/composer-baz.lock
           root: foo
+
+      - name: Assert output contains SARIF
+        if: steps.subject.outputs.sarif == ''
+        run: exit 1
 
   wait-for-all-test:
     if: cancelled() || contains(needs.*.result, 'cancelled') || contains(needs.*.result, 'failure')
