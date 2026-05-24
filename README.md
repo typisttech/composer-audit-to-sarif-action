@@ -75,7 +75,7 @@ See [action.yml](action.yml) and the underlying script [`ComSARIF`](https://gith
       # Default: ${{ github.workspace }}
       root: some/path
 
-      # ComSARIF version.
+      # ComSARIF version
       #
       # The version of [ComSARIF] to use. Leave blank for latest. For example: v1.0.2
       #
