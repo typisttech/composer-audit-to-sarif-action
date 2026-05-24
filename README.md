@@ -97,13 +97,85 @@ See [action.yml](action.yml) and the underlying script [`ComSARIF`](https://gith
 
 ## Examples
 
-<details open>
-  <summary>TODO</summary>
+### Audit based on the lock file instead of the installed packages
 
 ```yaml
-TODO
+name: Audit
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 9 * * *' # Daily
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+permissions:
+  # Required for all workflows
+  security-events: write
+  # Required for private repositories
+  actions: read
+  contents: read
+
+jobs:
+  composer-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          sparse-checkout: |
+            composer.json
+            composer.lock
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          coverage: none
+
+      - run: composer audit --locked --format json > audit.json
+        continue-on-error: true
+
+      - uses: typisttech/composer-audit-to-sarif-action@main
+        id: comsarif
+        with:
+          audit: audit.json
+
+      - uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: ${{ steps.comsarif.outputs.sarif }}
 ```
-</details>
+
+### Audit based the installed packages
+
+> [!TIP]
+> `composer install` is essential to [`typisttech/wp-org-closed-plugin`](https://github.com/typisttech/wp-org-closed-plugin).
+
+
+```diff
+        - uses: shivammathur/setup-php@v2
+          with:
+            php-version: '8.5'
+            coverage: none
+
++       - run: composer install --no-security-blocking
++
++       - run: composer audit --format json > audit.json
+-       - run: composer audit --locked --format json > audit.json
+          continue-on-error: true
+
+        - uses: typisttech/composer-audit-to-sarif-action@main
+          id: comsarif
+          with:
+            audit: audit.json
+
+        - uses: github/codeql-action/upload-sarif@v4
+          with:
+            sarif_file: ${{ steps.comsarif.outputs.sarif }}
+```
 
 ## Credits
 
