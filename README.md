@@ -159,7 +159,7 @@ jobs:
       - run: composer audit --locked --format json > audit.json
         continue-on-error: true
 
-      - uses: typisttech/composer-audit-to-sarif-action@main
+      - uses: typisttech/composer-audit-to-sarif-action@v0
         id: comsarif
         with:
           audit: audit.json
