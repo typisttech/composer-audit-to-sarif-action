@@ -66,7 +66,7 @@ See [action.yml](action.yml) and the underlying script [`ComSARIF`](https://gith
 ```yaml
   - uses: typisttech/composer-audit-to-sarif-action@v0
     with:
-      # Path to Path to audit JSON file
+      # Path to audit JSON file
       #
       # Default: audit.json
       audit: some/path/to/audit.json
@@ -81,25 +81,19 @@ See [action.yml](action.yml) and the underlying script [`ComSARIF`](https://gith
       # Default: ${{ github.workspace }}
       root: some/path
 
-      # ComSARIF version
-      #
-      # The version of [ComSARIF] to use. Leave blank for latest. For example: v1.0.2
+      # Version of [ComSARIF] to use. Leave blank for latest. For example: v1.0.2
       #
       # [ComSARIF]: https://github.com/typisttech/comsarif
       #
       # Default: ''
       version: v1.0.2
 
-      # Verify Attestation
-      #
       # Whether to verify ComSARIF tarball attestation.
       #
       # Default: true
       verify-attestation: false
 
-      # Github Token
-      #
-      # GitHub token to use for authentication
+      # GitHub token for authentication
       #
       # Default: ${{ github.token }}
       github-token: ${{ secrets.GITHUB_PAT_TOKEN }}

@@ -21,7 +21,7 @@ inputs:
 
   version:
     description: |
-      The version of ComSARIF to use. Leave blank for latest. For example: v1.0.2
+      Version of ComSARIF to use. Leave blank for latest. For example: v1.0.2
     default: ''
 
   verify-attestation:
@@ -29,7 +29,7 @@ inputs:
     default: true
 
   github-token:
-    description: GitHub token to use for authentication
+    description: GitHub token for authentication
     default: ${{ github.token }}
 
 outputs:
