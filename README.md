@@ -42,6 +42,12 @@
 </details>
 
 <details>
+  <summary>Code scanning alert details</summary>
+
+  ![GitHub code scanning alert details](assets/alert-details.webp)
+</details>
+
+<details>
   <summary>Inline advisory pull request comment</summary>
 
   ![Inline advisory comment on GitHub pull request](assets/advisory.webp)
