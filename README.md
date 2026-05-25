@@ -187,7 +187,7 @@ jobs:
             php-version: '8.5'
             coverage: none
 
-+       - run: composer install --no-security-blocking
++       - run: composer install
 +
 +       - run: composer audit --format json > audit.json
 -       - run: composer audit --locked --format json > audit.json
