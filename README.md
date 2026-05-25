@@ -169,7 +169,7 @@ jobs:
           sarif_file: ${{ steps.comsarif.outputs.sarif }}
 ```
 
-### Audit based the installed packages
+### Audit based on installed packages
 
 > [!TIP]
 > `composer install` is essential to [`typisttech/wp-org-closed-plugin`](https://github.com/typisttech/wp-org-closed-plugin).
