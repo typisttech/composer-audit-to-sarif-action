@@ -3,7 +3,7 @@
 # Composer Audit to SARIF Action
 
 [![GitHub Release](https://img.shields.io/github/v/release/typisttech/composer-audit-to-sarif-action)](https://github.com/typisttech/composer-audit-to-sarif-action/releases/latest)
-[![GitHub Marketplace](https://img.shields.io/badge/marketplace-composer--audit--to--sarif--action-blue?logo=github)](https://github.com/marketplace/actions/composer-audit-to-sarif-action)
+[![GitHub Marketplace](https://img.shields.io/badge/marketplace-composer--audit--to--sarif-blue?logo=github)](https://github.com/marketplace/actions/composer-audit-to-sarif)
 [![Test](https://github.com/typisttech/composer-audit-to-sarif-action/actions/workflows/test.yml/badge.svg)](https://github.com/typisttech/composer-audit-to-sarif-action/actions/workflows/test.yml)
 [![License](https://img.shields.io/github/license/typisttech/composer-audit-to-sarif-action.svg)](https://github.com/typisttech/composer-audit-to-sarif-action/blob/master/LICENSE)
 [![Follow @TangRufus on X](https://img.shields.io/badge/Follow-TangRufus-15202B?logo=x&logoColor=white)](https://x.com/tangrufus)
