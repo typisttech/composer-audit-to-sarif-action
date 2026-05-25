@@ -38,7 +38,7 @@ outputs:
     value: ${{ steps.convert.outputs.sarif }}
 
 runs:
-  using: "composite"
+  using: composite
   steps:
     - name: Prepare Environment
       run: |
@@ -72,7 +72,7 @@ runs:
       run: exit 1
       shell: bash
 
-    - name: Download PHP Matrix
+    - name: Download ComSARIF
       run: gh release download --repo typisttech/comsarif --output comsarif.tar.gz --pattern "${PATTERN}" "${TAG}"
       shell: bash
       working-directory: ${{ env.COMSARIF_DIR }}
