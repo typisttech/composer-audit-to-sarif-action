@@ -199,7 +199,7 @@ jobs:
 
 ## People Also Use
 
-- [`ComSARIF`](https://github.com/typisttech/comsarif/)
+- [ComSARIF](https://github.com/typisttech/comsarif/)
   CLI to convert Composer audit reports to SARIF files
 - [PHP Matrix Action](https://github.com/typisttech/php-matrix-action)
   Generate PHP version matrix according to `composer.json` for GitHub Actions
