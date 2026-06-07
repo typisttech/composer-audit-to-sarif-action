@@ -12,7 +12,7 @@
 [![Hire Typist Tech](https://img.shields.io/badge/Hire-Typist%20Tech-778899)](https://typist.tech/contact/)
 
 <p>
-  <strong> Convert Composer audit reports to SARIF files</strong>
+  <strong>Convert Composer audit reports to SARIF files</strong>
   <br>
   <br>
   Built with ♥ by <a href="https://typist.tech/">Typist Tech</a>
@@ -199,6 +199,8 @@ jobs:
 
 ## People Also Use
 
+- [`ComSARIF`](https://github.com/typisttech/comsarif/)
+  CLI to convert Composer audit reports to SARIF files
 - [PHP Matrix Action](https://github.com/typisttech/php-matrix-action)
   Generate PHP version matrix according to `composer.json` for GitHub Actions
 - [WP Sec Adv](https://github.com/typisttech/wpsecadv)
