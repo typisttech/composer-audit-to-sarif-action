@@ -134,11 +134,9 @@ on:
       - main
 
 permissions:
-  # Required for all workflows
-  security-events: write
-  # Required for private repositories
-  actions: read
-  contents: read
+  contents: read # for actions/checkout to fetch code
+  security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
+  actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
 
 jobs:
   composer-audit:
