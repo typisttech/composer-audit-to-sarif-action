@@ -148,6 +148,7 @@ jobs:
           sparse-checkout: |
             composer.json
             composer.lock
+          sparse-checkout-cone-mode: false
 
       - uses: shivammathur/setup-php@v2
         with:
@@ -156,6 +157,8 @@ jobs:
 
       - run: composer audit --locked --format json > audit.json
         continue-on-error: true
+        # env:
+        #  COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }} # if applicable
 
       - uses: typisttech/composer-audit-to-sarif-action@v0
         id: comsarif
@@ -176,23 +179,19 @@ jobs:
 ```diff
         - uses: shivammathur/setup-php@v2
           with:
-            php-version: '8.5'
++           php-version: '8.5'
+-           php-version: latest
             coverage: none
 
 +       - run: composer install
++         # env:
++         #  COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }} # if applicable
 +
 +       - run: composer audit --format json > audit.json
 -       - run: composer audit --locked --format json > audit.json
           continue-on-error: true
-
-        - uses: typisttech/composer-audit-to-sarif-action@v0
-          id: comsarif
-          with:
-            audit: audit.json
-
-        - uses: github/codeql-action/upload-sarif@v4
-          with:
-            sarif_file: ${{ steps.comsarif.outputs.sarif }}
+          # env:
+          #  COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }} # if applicable
 ```
 
 ## People Also Use
