@@ -151,7 +151,7 @@ jobs:
 
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.5'
+          php-version: latest
           coverage: none
 
       - run: composer audit --locked --format json > audit.json
