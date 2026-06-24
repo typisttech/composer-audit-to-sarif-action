@@ -21,8 +21,9 @@ jobs:
         with:
           persist-credentials: false
           sparse-checkout: .github
+          sparse-checkout-cone-mode: false
 
       - name: Check workflow files
         uses: docker://rhysd/actionlint:latest
         with:
-          args: -color
+          args: -color --debug
