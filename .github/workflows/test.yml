@@ -24,9 +24,11 @@ jobs:
       matrix:
         runs-on:
           - ubuntu-slim
-          - ubuntu-latest
+          - ubuntu-26.04
           - ubuntu-26.04-arm
-          - macos-latest
+          - ubuntu-24.04
+          - ubuntu-24.04-arm
+          - macos-26
           - macos-26-intel
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
