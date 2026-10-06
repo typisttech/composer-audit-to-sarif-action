@@ -20,12 +20,15 @@ permissions: {}
 jobs:
   default:
     runs-on: ${{ matrix.runs-on }}
-    strategy:
+    strategy: &strategy
       matrix:
         runs-on:
-          - ubuntu-latest
+          - ubuntu-slim
+          - ubuntu-26.04
+          - ubuntu-26.04-arm
+          - ubuntu-24.04
           - ubuntu-24.04-arm
-          - macos-latest
+          - macos-26
           - macos-26-intel
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -48,13 +51,7 @@ jobs:
 
   customization:
     runs-on: ${{ matrix.runs-on }}
-    strategy:
-      matrix:
-        runs-on:
-          - ubuntu-latest
-          - ubuntu-24.04-arm
-          - macos-latest
-          - macos-26-intel
+    strategy: *strategy
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -86,7 +83,7 @@ jobs:
     needs:
       - default
       - customization
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     steps:
       - name: Assert no required jobs were cancelled or failed
         run: exit 1
