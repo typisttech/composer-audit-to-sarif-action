@@ -1,21 +1,27 @@
-# Taken from https://github.com/typisttech/.github/blob/8c3b859e35165a6e81a660713be195ec61d2ca1d/.github/workflows/lint-actions.yml
-name: Lint GitHub Actions
+name: Lint
 
 on:
+  workflow_dispatch:
   pull_request:
     branches:
       - main
   push:
     branches:
       - main
-  workflow_call:
 
-permissions:
-  contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref_name }}-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+
+permissions: {}
 
 jobs:
+  # Taken from https://github.com/rhysd/actionlint/blob/dc8cca81866af081bdd0e0653474916d7046c5c5/docs/usage.md#use-actionlint-on-github-actions
+  # See also: https://github.com/rhysd/actionlint/issues/117#issuecomment-1132835368
   actionlint:
-    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -23,7 +29,40 @@ jobs:
           sparse-checkout: .github/workflows
           sparse-checkout-cone-mode: false
 
+      - name: Inject actionlint config from `typisttech/.github` repo
+        run: |
+          curl --fail \
+            --retry 10 \
+            --retry-all-errors \
+            --retry-delay 1 \
+            --output .github/actionlint.yml \
+            https://raw.githubusercontent.com/typisttech/.github/refs/heads/main/.github/actionlint.yml
+
       - name: Check workflow files
-        uses: docker://rhysd/actionlint:latest
+        uses: docker://rhysd/actionlint:1.7.12@sha256:b1934ee5f1c509618f2508e6eb47ee0d3520686341fec936f3b79331f9315667
         with:
           args: -color
+
+  zizmor:
+    permissions:
+      security-events: write
+      contents: read
+      actions: read
+    runs-on: ubuntu-26.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Inject zizmor config from `typisttech/.github` repo
+        run: |
+          curl --fail \
+            --retry 10 \
+            --retry-all-errors \
+            --retry-delay 1 \
+            --output .github/zizmor.yml \
+            https://raw.githubusercontent.com/typisttech/.github/refs/heads/main/.github/zizmor.yml
+
+      - uses: zizmorcore/zizmor-action@cc914d7f3750a2d13d75c7f184a1060aa0e9d482 # v0.6.4
+        with:
+          persona: pedantic
