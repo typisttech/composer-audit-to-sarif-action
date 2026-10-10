@@ -64,7 +64,7 @@
 See [action.yml](action.yml) and the underlying script [`ComSARIF`](https://github.com/typisttech/comsarif/#options).
 
 ```yaml
-  - uses: typisttech/composer-audit-to-sarif-action@v0
+  - uses: typisttech/composer-audit-to-sarif-action@b92b7e7b6e54c84918cf6a5e8ffe8058d6749f9e # v0.1.4
     with:
       # Path to audit JSON file
       #
@@ -142,7 +142,7 @@ jobs:
   composer-audit:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
           sparse-checkout: |
@@ -150,7 +150,7 @@ jobs:
             composer.lock
           sparse-checkout-cone-mode: false
 
-      - uses: shivammathur/setup-php@v2
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
         with:
           php-version: latest
           coverage: none
@@ -160,12 +160,12 @@ jobs:
         # env:
         #  COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }} # if applicable
 
-      - uses: typisttech/composer-audit-to-sarif-action@v0
+      - uses: typisttech/composer-audit-to-sarif-action@b92b7e7b6e54c84918cf6a5e8ffe8058d6749f9e # v0.1.4
         id: comsarif
         with:
           audit: audit.json
 
-      - uses: github/codeql-action/upload-sarif@v4
+      - uses: github/codeql-action/upload-sarif@24c54180a607b1449ed407dd24f251e4e9147c8d # v4.38.3
         with:
           sarif_file: ${{ steps.comsarif.outputs.sarif }}
 ```
@@ -177,7 +177,7 @@ jobs:
 
 
 ```diff
-        - uses: shivammathur/setup-php@v2
+        - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
           with:
 +           php-version: '8.5'
 -           php-version: latest
