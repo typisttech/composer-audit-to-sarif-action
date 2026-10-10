@@ -26,7 +26,7 @@ inputs:
 
   verify-attestation:
     description: Whether to verify ComSARIF tarball attestation
-    default: true
+    default: 'true'
 
   github-token:
     description: GitHub token for authentication
@@ -41,7 +41,7 @@ runs:
   using: composite
   steps:
     - name: Prepare Environment
-      run: |
+      run: | # zizmor: ignore[github-env]
         mkdir -p "${RUNNER_TEMP}/comsarif"
         echo COMSARIF_DIR="${RUNNER_TEMP}/comsarif" >> "$GITHUB_ENV"
         echo COMSARIF="${RUNNER_TEMP}/comsarif/bin/comsarif" >> "$GITHUB_ENV"

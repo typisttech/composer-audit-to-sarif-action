@@ -11,13 +11,14 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
   cancel-in-progress: true
 
-permissions:
-  contents: write
-  pull-requests: write
+permissions: {}
 
 jobs:
   auto-merge-pull-request:
-    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    runs-on: ubuntu-slim
     if: github.event.pull_request.user.login == 'dependabot[bot]'
     steps:
       - name: Dependabot metadata

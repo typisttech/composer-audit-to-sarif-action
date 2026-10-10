@@ -31,18 +31,13 @@ jobs:
           - macos-26
           - macos-26-intel
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-          path: local-action
-
       - name: Create fake audit.json
         run: echo '{"advisories":[],"abandoned":[]}' > audit.json
 
       - name: Create fake composer.lock
         run: echo '{"packages":[{"name":"psr/log"}],"packages-dev":[]}' > composer.lock
 
-      - uses: ./local-action
+      - uses: $/
         id: subject
 
       - name: Assert output contains SARIF
@@ -53,11 +48,6 @@ jobs:
     runs-on: ${{ matrix.runs-on }}
     strategy: *strategy
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-          path: local-action
-
       - name: Create fake root directory
         run: mkdir -p foo/bar
 
@@ -67,7 +57,7 @@ jobs:
       - name: Create fake composer.lock
         run: echo '{"packages":[{"name":"psr/log"}],"packages-dev":[]}' > foo/bar/composer-baz.lock
 
-      - uses: ./local-action
+      - uses: $/
         id: subject
         with:
           audit: foo/bar/audit-baz.json
