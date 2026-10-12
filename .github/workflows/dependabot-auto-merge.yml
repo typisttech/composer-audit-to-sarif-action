@@ -16,8 +16,8 @@ permissions: {}
 jobs:
   auto-merge-pull-request:
     permissions:
-      contents: write
-      pull-requests: write
+      contents: read
+      pull-requests: read
     runs-on: ubuntu-slim
     if: github.event.pull_request.user.login == 'dependabot[bot]'
     steps:
@@ -26,6 +26,20 @@ jobs:
         uses: dependabot/fetch-metadata@25dd0e34f4fe68f24cc83900b1fe3fe149efef98 # v3.1.0
         with:
           github-token: "${{ github.token }}"
+        background: true
+
+      - name: Create GitHub App Token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        id: app-token
+        with:
+          client-id: ${{ vars.TASTENDRUCK_CLIENT_ID }}
+          private-key: ${{ secrets.TASTENDRUCK_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+          permission-workflows: write
+        background: true
+
+      - wait-all:
 
       - if: |
           (steps.dependabot-metadata.outputs.update-type == 'version-update:semver-minor')
@@ -33,4 +47,4 @@ jobs:
         run: gh pr merge --auto --squash "$PR_URL"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
