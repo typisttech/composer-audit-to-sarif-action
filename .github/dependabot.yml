@@ -7,3 +7,6 @@ updates:
       interval: daily
     cooldown:
       default-days: 3
+    groups:
+      github-actions-dependencies:
+        group-by: dependency-name
