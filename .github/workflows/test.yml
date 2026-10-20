@@ -26,7 +26,6 @@ jobs:
           - ubuntu-26.04
           - ubuntu-26.04-arm
           - xcode-27
-          - macos-26-intel
     runs-on: ${{ matrix.runs-on }}
     steps:
       - name: Create fake audit.json
