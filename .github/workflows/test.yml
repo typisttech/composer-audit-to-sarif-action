@@ -25,9 +25,7 @@ jobs:
           - ubuntu-slim
           - ubuntu-26.04
           - ubuntu-26.04-arm
-          - ubuntu-24.04
-          - ubuntu-24.04-arm
-          - macos-26
+          - xcode-27
           - macos-26-intel
     runs-on: ${{ matrix.runs-on }}
     steps:
@@ -47,8 +45,8 @@ jobs:
   customization:
     permissions:
       contents: read
-    runs-on: ${{ matrix.runs-on }}
     strategy: *strategy
+    runs-on: ${{ matrix.runs-on }}
     steps:
       - name: Create fake root directory
         run: mkdir -p foo/bar
