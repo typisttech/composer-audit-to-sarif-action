@@ -8,8 +8,6 @@ on:
   push:
     branches:
       - main
-    tags:
-      - '**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref_name }}
@@ -19,7 +17,8 @@ permissions: {}
 
 jobs:
   default:
-    runs-on: ${{ matrix.runs-on }}
+    permissions:
+      contents: read
     strategy: &strategy
       matrix:
         runs-on:
@@ -30,6 +29,7 @@ jobs:
           - ubuntu-24.04-arm
           - macos-26
           - macos-26-intel
+    runs-on: ${{ matrix.runs-on }}
     steps:
       - name: Create fake audit.json
         run: echo '{"advisories":[],"abandoned":[]}' > audit.json
@@ -37,14 +37,16 @@ jobs:
       - name: Create fake composer.lock
         run: echo '{"packages":[{"name":"psr/log"}],"packages-dev":[]}' > composer.lock
 
-      - uses: $/
-        id: subject
+      - id: subject
+        uses: $/
 
       - name: Assert output contains SARIF
         if: steps.subject.outputs.sarif == ''
         run: exit 1
 
   customization:
+    permissions:
+      contents: read
     runs-on: ${{ matrix.runs-on }}
     strategy: *strategy
     steps:
@@ -57,8 +59,8 @@ jobs:
       - name: Create fake composer.lock
         run: echo '{"packages":[{"name":"psr/log"}],"packages-dev":[]}' > foo/bar/composer-baz.lock
 
-      - uses: $/
-        id: subject
+      - id: subject
+        uses: $/
         with:
           audit: foo/bar/audit-baz.json
           lock: foo/bar/composer-baz.lock
