@@ -12,11 +12,14 @@ concurrency:
 
 permissions: {}
 
+cache-mode: none
+
 jobs:
   release-drafter:
-    runs-on: ubuntu-slim
     permissions:
       contents: write
       pull-requests: read
+    cache-mode: none
+    runs-on: ubuntu-slim
     steps:
       - uses: release-drafter/release-drafter@978bb0b30c5ee8cdd332ced253758157150d43f0 # v7.10.0
