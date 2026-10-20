@@ -40,13 +40,6 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Prepare Environment
-      run: | # zizmor: ignore[github-env]
-        mkdir -p "${RUNNER_TEMP}/comsarif"
-        echo COMSARIF_DIR="${RUNNER_TEMP}/comsarif" >> "$GITHUB_ENV"
-        echo COMSARIF="${RUNNER_TEMP}/comsarif/bin/comsarif" >> "$GITHUB_ENV"
-      shell: bash
-
     - name: Determine Download Pattern (Linux arm64)
       if: runner.os == 'Linux' && runner.arch == 'ARM64'
       run: echo "PATTERN=comsarif_Linux_arm64.tar.gz" >> "$GITHUB_ENV"
@@ -73,37 +66,40 @@ runs:
       shell: bash
 
     - name: Download ComSARIF
-      run: gh release download --repo typisttech/comsarif --output comsarif.tar.gz --pattern "${PATTERN}" "${TAG}"
-      shell: bash
-      working-directory: ${{ env.COMSARIF_DIR }}
+      run: gh release download --repo typisttech/comsarif "${VERSION}" --pattern "${PATTERN}" --output comsarif.tar.gz
       env:
-        TAG: ${{ inputs.version }}
-        GH_TOKEN: ${{ inputs.github-token }}
+        VERSION: ${{ inputs.version }}
+        GH_TOKEN: ${{ github.token }}
+      shell: bash
+      working-directory: ${{ runner.temp }}
 
     - name: Verify Attestation
       if: ${{ inputs.verify-attestation == 'true' }}
       run: gh attestation verify --repo typisttech/comsarif comsarif.tar.gz
-      shell: bash
-      working-directory: ${{ env.COMSARIF_DIR }}
       env:
         GH_TOKEN: ${{ inputs.github-token }}
-
-    - name: Unarchive the Binary
-      run: |
-        mkdir bin
-        tar -xvf comsarif.tar.gz -C ./bin comsarif
       shell: bash
-      working-directory: ${{ env.COMSARIF_DIR }}
+      working-directory: ${{ runner.temp }}
+
+    - name: Install ComSARIF
+      run: |
+        mkdir comsarif && \
+        tar -xvf comsarif.tar.gz --directory comsarif && \
+        mkdir bin && \
+        cp comsarif/comsarif bin/comsarif && \
+        echo "$(pwd)/bin" >> "$GITHUB_PATH"
+      shell: bash
+      working-directory: ${{ runner.temp }}
 
     - name: Convert Composer Audit to SARIF
       id: convert
       run: |
-        set +e
+        set -euox pipefail
 
         out="${RUNNER_TEMP}/comsarif-${RANDOM}.sarif"
         err="${RUNNER_TEMP}/comsarif-${RANDOM}.err"
 
-        "${COMSARIF}" --audit "${INPUT_AUDIT}" --lock "${INPUT_LOCK}" --root "${INPUT_ROOT}" > "${out}" 2> "${err}"
+        comsarif --audit "${INPUT_AUDIT}" --lock "${INPUT_LOCK}" --root "${INPUT_ROOT}" > "${out}" 2> "${err}"
 
         if [ $? -ne 0 ]; then
             errMsg=$(cat "${err}")
@@ -112,11 +108,11 @@ runs:
         fi
 
         echo "sarif=$out" >> "$GITHUB_OUTPUT"
-      shell: bash
       env:
         INPUT_AUDIT: ${{ inputs.audit }}
         INPUT_LOCK: ${{ inputs.lock }}
         INPUT_ROOT: ${{ inputs.root }}
+      shell: bash
 
     - name: Print Info
       if: ${{ !cancelled() }}
@@ -124,7 +120,7 @@ runs:
         echo "==> Setup ComSARIF"
         echo -e "\033[32;m✓\033[0m \033[34;mcomsarif\033[0m https://github.com/typisttech/comsarif"
         echo "::group::$ comsarif --version"
-        "${COMSARIF}" --version
+        comsarif --version
         echo "::endgroup::"
 
         echo ""
@@ -145,6 +141,6 @@ runs:
         else
           echo "SARIF output is available at $SARIF"
         fi
-      shell: bash
       env:
         SARIF: ${{ steps.convert.outputs.sarif }}
+      shell: bash
