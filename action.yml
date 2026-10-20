@@ -55,11 +55,6 @@ runs:
       run: echo "PATTERN=comsarif_Darwin_arm64.tar.gz" >> "$GITHUB_ENV"
       shell: bash
 
-    - name: Determine Download Pattern (Darwin amd64)
-      if: runner.os == 'macOS' && runner.arch == 'x64'
-      run: echo "PATTERN=comsarif_Darwin_x86_64.tar.gz" >> "$GITHUB_ENV"
-      shell: bash
-
     - name: Assert Download Pattern Determined
       if: env.PATTERN == ''
       run: exit 1
