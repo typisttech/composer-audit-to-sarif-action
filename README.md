@@ -64,7 +64,7 @@
 See [action.yml](action.yml) and the underlying script [`ComSARIF`](https://github.com/typisttech/comsarif/#options).
 
 ```yaml
-  - uses: typisttech/composer-audit-to-sarif-action@b92b7e7b6e54c84918cf6a5e8ffe8058d6749f9e # v0.1.4
+  - uses: typisttech/composer-audit-to-sarif-action@ea2d9b661995ad0aea09e80d61d1dc610a83c0d1 # v0.1.5
     with:
       # Path to audit JSON file
       #
@@ -161,12 +161,12 @@ jobs:
         # env:
         #  COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }} # if applicable
 
-      - uses: typisttech/composer-audit-to-sarif-action@b92b7e7b6e54c84918cf6a5e8ffe8058d6749f9e # v0.1.4
+      - uses: typisttech/composer-audit-to-sarif-action@ea2d9b661995ad0aea09e80d61d1dc610a83c0d1 # v0.1.5
         id: comsarif
         with:
           audit: audit.json
 
-      - uses: github/codeql-action/upload-sarif@24c54180a607b1449ed407dd24f251e4e9147c8d # v4.38.3
+      - uses: github/codeql-action/upload-sarif@1bd86f2fdb4b86187fa4059f16f31a3202acc9ea # v4.39.4
         with:
           sarif_file: ${{ steps.comsarif.outputs.sarif }}
 ```
