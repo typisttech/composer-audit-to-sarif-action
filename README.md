@@ -154,6 +154,7 @@ jobs:
         with:
           php-version: latest
           coverage: none
+          tools: composer:v2
 
       - run: composer audit --locked --format json > audit.json
         continue-on-error: true
@@ -179,16 +180,17 @@ jobs:
 ```diff
         - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
           with:
-+           php-version: '8.5'
 -           php-version: latest
++           php-version: '8.6'
             coverage: none
+            tools: composer:v2
 
 +       - run: composer install
 +         # env:
 +         #  COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }} # if applicable
 +
-+       - run: composer audit --format json > audit.json
 -       - run: composer audit --locked --format json > audit.json
++       - run: composer audit --format json > audit.json
           continue-on-error: true
           # env:
           #  COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }} # if applicable
